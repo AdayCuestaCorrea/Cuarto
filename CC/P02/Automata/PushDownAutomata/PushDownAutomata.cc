@@ -56,22 +56,46 @@ void PushDownAutomata::print(std::ostream& os) const {
 
 bool PushDownAutomata::execute(std::string word) {
   std::stack<Symbol> stack = stack_;
-  std::shared_ptr<State> current_state = initial_state_;
-  for (int i = 0; i < word.size(); i++) {
-    Symbol read = word[i];
-    bool found = false;
-    for (Transition transition : current_state->get_transitions()) {
-      if (transition.get_read() == read && transition.get_remove_from_stack() == stack.top()) {
-        stack.pop();
-        for (char symbol : transition.get_insert_into_stack()) {
-          stack.push(symbol);
-        }
-        current_state = transition.get_destination();
-        found = true;
-        break;
-      }
-    }
-    if (!found) return false;
+  return executeRecursive(initial_state_, word, 0, stack);
+}
+
+bool PushDownAutomata::executeRecursive(std::shared_ptr<State> current_state, const std::string& word, int index, std::stack<Symbol>& stack) {
+  // Base case: if the entire word has been read and the stack is empty
+  if (index == word.size() && stack.empty()) {
+    return true;
   }
-  return true;
+
+  // If the stack is empty but the word is not fully read, return false
+  if (stack.empty()) {
+    return false;
+  }
+
+  Symbol read = (index < word.size()) ? word[index] : '.';
+  Symbol top_stack = stack.top();
+
+  for (const Transition& transition : current_state->get_transitions()) {
+    if ((transition.get_read() == read || transition.get_read() == '.') && transition.get_remove_from_stack() == top_stack) {
+      // Apply the transition
+      stack.pop();
+      std::stack<Symbol> temp_stack = stack;
+      
+      // Push symbols in reverse order
+      const std::string& to_push = transition.get_insert_into_stack();
+      for (auto it = to_push.rbegin(); it != to_push.rend(); ++it) {
+        if (*it != '.') {
+          temp_stack.push(*it);
+        }
+      }
+
+      // Recur with the next state and updated stack
+      if (executeRecursive(transition.get_destination(), word, index + (transition.get_read() != '.'), temp_stack)) {
+        return true;
+      }
+
+      // Restore the stack for the next iteration
+      stack.push(top_stack);
+    }
+  }
+
+  return false;
 }

@@ -10,7 +10,7 @@
   */
 
 #include "PushDownAutomataLoader.h"
-#include "../../Automata/PushDownAutomata/PushDownAutomata.h"
+
 
 std::shared_ptr<Automata> PushDownAutomataLoader::load(std::string file_path) {
   if (!validFile(file_path)) {
@@ -21,28 +21,46 @@ std::shared_ptr<Automata> PushDownAutomataLoader::load(std::string file_path) {
   std::shared_ptr<State> initial_state;
   Alphabet alphabet;
   Alphabet stack_alphabet;
+  std::stack<Symbol> stack;
 
+  loadStates(states, initial_state);
+  loadAlphabet(alphabet);
+  loadStackAlphabet(stack_alphabet);
+  loadInitialStack(stack);
+  loadTransitions(states);
+
+  return std::make_shared<PushDownAutomata>(states, initial_state, alphabet, stack_alphabet, stack);
+}
+
+void PushDownAutomataLoader::loadStates(States& states, std::shared_ptr<State>& initial_state) {
   for (int i = 0; i < lines[0].size(); i++) {
     std::shared_ptr<State> state = std::make_shared<State>(lines[0][i], lines[3][0] == lines[0][i]);
     if (lines[3][0] == lines[0][i]) initial_state = state;
     states.push_back(state);
   }
+}
 
+void PushDownAutomataLoader::loadAlphabet(Alphabet& alphabet) {
   for (int i = 0; i < lines[1].size(); i++) {
     alphabet.push_back(lines[1][i][0]);
   }
   alphabet.push_back('.');
+}
 
+void PushDownAutomataLoader::loadStackAlphabet(Alphabet& stack_alphabet) {
   for (int i = 0; i < lines[2].size(); i++) {
     stack_alphabet.push_back(lines[2][i][0]);
   }
   stack_alphabet.push_back('.');
+}
 
-  std::stack<Symbol> stack;
+void PushDownAutomataLoader::loadInitialStack(std::stack<Symbol>& stack) {
   for (int i = 0; i < lines[4].size(); i++) {
     stack.push(lines[4][i][0]);
   }
+}
 
+void PushDownAutomataLoader::loadTransitions(States& states) {
   for (int i = 5; i < lines.size(); i++) {
     std::shared_ptr<State> origin_state;
     std::shared_ptr<State> destination_state;
@@ -53,7 +71,6 @@ std::shared_ptr<Automata> PushDownAutomataLoader::load(std::string file_path) {
     Transition transition(destination_state, lines[i][1][0], lines[i][2][0], lines[i][4]);
     origin_state->add_transition(transition);
   }
-  return std::make_shared<PushDownAutomata>(states, initial_state, alphabet, stack_alphabet, stack);
 }
 
 std::vector<std::vector<std::string>> PushDownAutomataLoader::readFile(std::string file_path) {
@@ -97,7 +114,7 @@ bool PushDownAutomataLoader::validFile(std::string file_path) {
 }
 
 bool PushDownAutomataLoader::checkForDuplicates() {
-  if (Utility::hasDuplicates(lines)) {
+  if (Utility::hasDuplicates(lines) && lines[0].size() > 1) {
     std::cerr << "Error: Duplicate lines found on the file." << std::endl;
     return true;
   }
@@ -114,18 +131,9 @@ bool PushDownAutomataLoader::checkFileLength() {
 
 bool PushDownAutomataLoader::validateAlphabet(const std::vector<std::string>& alphabet, bool isStackAlphabet) {
   for (const std::string &symbol : alphabet) {
-    for (char character : symbol) {
-      if (isStackAlphabet) {
-        if (islower(character) || !isalnum(character)) {
-          std::cerr << "Error: stack alphabet must use upper case or numbers." << std::endl;
-          return false;
-        }
-      } else {
-        if (isupper(character) || !isalnum(character)) {
-          std::cerr << "Error: alphabet must use lower case or numbers." << std::endl;
-          return false;
-        }
-      }
+    if (symbol.size() > 1) {
+      std::cerr << "Error: Alphabet symbols must be of length 1." << std::endl;
+      return false;
     }
     if (symbol == ".") {
       std::cerr << "Error: alphabet must not contain the empty symbol." << std::endl;

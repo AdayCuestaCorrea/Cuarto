@@ -25,4 +25,5 @@ class PushDownAutomata : public Automata {
  private:
   std::stack<Symbol> stack_;
   Alphabet stack_alphabet_;
+  bool executeRecursive(std::shared_ptr<State> current_state, const std::string& word, int index, std::stack<Symbol>& stack);
 };

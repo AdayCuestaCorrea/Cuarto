@@ -35,6 +35,5 @@ class Automata {
  protected:
   States states_;
   std::shared_ptr<State> initial_state_;
-  std::shared_ptr<State> current_state_ = initial_state_;
   Alphabet alphabet_;
 };

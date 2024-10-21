@@ -12,8 +12,7 @@
 #pragma once
 
 #include "../AutomataLoader.h"
-
-class PushDownAutomata;
+#include "../../Automata/PushDownAutomata/PushDownAutomata.h"
 
 class PushDownAutomataLoader : public AutomataLoader {
  public:
@@ -26,4 +25,9 @@ class PushDownAutomataLoader : public AutomataLoader {
   bool validateAlphabet(const std::vector<std::string>& alphabet, bool isStackAlphabet);
   bool validateInitial(const std::vector<std::string>& states, const std::vector<std::string>& initialState);
   bool validateTransitions(const std::vector<std::string>& states, const std::vector<std::string>& alphabet, const std::vector<std::string>& stack_alphabet);
+  void loadStates(States& states, std::shared_ptr<State>& initial_state);
+  void loadAlphabet(Alphabet& alphabet);
+  void loadStackAlphabet(Alphabet& stack_alphabet);
+  void loadInitialStack(std::stack<Symbol>& stack);
+  void loadTransitions(States& states);
 };
