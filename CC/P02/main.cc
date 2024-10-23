@@ -23,9 +23,19 @@ int main(int argc, char* argv[]) {
     std::string word;
     std::cout << "Enter a word to check if it is accepted by the automata: ";
     std::cin >> word;
-    std::cout << "The word is " << (automata->execute(word) ? "accepted" : "rejected") << std::endl;
+
+#ifdef TRAZA
+    std::cout << "----- Debugging Information -----" << std::endl;
+#endif
+
+    bool result = automata->execute(word);
+
+#ifdef TRAZA
+    std::cout << "---------------------------------" << std::endl;
+#endif
+
+    std::cout << "The word is " << (result ? "accepted" : "rejected") << std::endl;
     number_of_words--;
   }
-  //std::cout << *automata << std::endl;
   return 0;
 }

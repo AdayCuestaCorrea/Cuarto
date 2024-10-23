@@ -73,6 +73,11 @@ bool PushDownAutomata::executeRecursive(std::shared_ptr<State> current_state, co
   Symbol read = (index < word.size()) ? word[index] : '.';
   Symbol top_stack = stack.top();
 
+#ifdef TRAZA
+  std::cout << "Current state: " << current_state->get_name() << ", Index: " << index 
+            << ", Read: " << read << ", Stack top: " << top_stack << std::endl;
+#endif
+
   for (const Transition& transition : current_state->get_transitions()) {
     if ((transition.get_read() == read || transition.get_read() == '.') && transition.get_remove_from_stack() == top_stack) {
       // Apply the transition
@@ -86,6 +91,12 @@ bool PushDownAutomata::executeRecursive(std::shared_ptr<State> current_state, co
           temp_stack.push(*it);
         }
       }
+
+#ifdef TRAZA
+      std::cout << "Transition: " << current_state->get_name() << " --(" << transition.get_read() 
+                << ", " << transition.get_remove_from_stack() << " / " << transition.get_insert_into_stack() 
+                << ")--> " << transition.get_destination()->get_name() << std::endl;
+#endif
 
       // Recur with the next state and updated stack
       if (executeRecursive(transition.get_destination(), word, index + (transition.get_read() != '.'), temp_stack)) {
