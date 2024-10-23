@@ -44,14 +44,12 @@ void PushDownAutomataLoader::loadAlphabet(Alphabet& alphabet) {
   for (int i = 0; i < lines[1].size(); i++) {
     alphabet.push_back(lines[1][i][0]);
   }
-  alphabet.push_back('.');
 }
 
 void PushDownAutomataLoader::loadStackAlphabet(Alphabet& stack_alphabet) {
   for (int i = 0; i < lines[2].size(); i++) {
     stack_alphabet.push_back(lines[2][i][0]);
   }
-  stack_alphabet.push_back('.');
 }
 
 void PushDownAutomataLoader::loadInitialStack(std::stack<Symbol>& stack) {
