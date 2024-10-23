@@ -13,29 +13,34 @@
 #include "AutomataLoader/PushDownAutomataLoader/PushDownAutomataLoader.h"
 
 int main(int argc, char* argv[]) {
-  Utility::help(argc, argv);
-  std::shared_ptr<AutomataLoader> loader = std::make_shared<PushDownAutomataLoader>();
-  std::shared_ptr<Automata> automata = loader->load(argv[1]);
-  int number_of_words = 0;
-  std::cout << "Enter the number of words you want to check: ";
-  std::cin >> number_of_words;
-  while (number_of_words > 0) {
-    std::string word;
-    std::cout << "Enter a word to check if it is accepted by the automata: ";
-    std::cin >> word;
+  try {
+    Utility::help(argc, argv);
+    std::shared_ptr<AutomataLoader> loader = std::make_shared<PushDownAutomataLoader>();
+    std::shared_ptr<Automata> automata = loader->load(argv[1]);
+    int number_of_words = 0;
+    std::cout << "Enter the number of words you want to check: ";
+    std::cin >> number_of_words;
+    while (number_of_words > 0) {
+      std::string word;
+      std::cout << "Enter a word to check if it is accepted by the automata: ";
+      std::cin >> word;
 
 #ifdef TRAZA
-    std::cout << "----- Debugging Information -----" << std::endl;
+      std::cout << "----- Debugging Information -----" << std::endl;
 #endif
 
-    bool result = automata->execute(word);
+      bool result = automata->execute(word);
 
 #ifdef TRAZA
-    std::cout << "---------------------------------" << std::endl;
+      std::cout << "---------------------------------" << std::endl;
 #endif
 
-    std::cout << "The word is " << (result ? "accepted" : "rejected") << std::endl;
-    number_of_words--;
+      std::cout << "The word is " << (result ? "accepted" : "rejected") << std::endl;
+      number_of_words--;
+    }
+  } catch (const std::runtime_error& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
   }
   return 0;
 }

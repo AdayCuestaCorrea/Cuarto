@@ -14,7 +14,7 @@
 
 std::shared_ptr<Automata> PushDownAutomataLoader::load(std::string file_path) {
   if (!validFile(file_path)) {
-    return nullptr;
+    throw std::runtime_error("Invalid file: " + file_path);
   }
 
   States states;
@@ -104,10 +104,18 @@ bool PushDownAutomataLoader::validFile(std::string file_path) {
   std::vector<std::string> alphabet = lines[1];
   std::vector<std::string> stack_alphabet = lines[2];
 
-  if (checkForDuplicates() || !checkFileLength() || 
+  if (checkForDuplicates() || !checkFileLength() || !checkStates(states) ||
       !validateAlphabet(alphabet, false) || !validateAlphabet(stack_alphabet, true) || 
       !validateInitialState(states, lines[3]) || !validateInitialStack(stack_alphabet, lines[4]) || 
       !validateTransitions(states, alphabet, stack_alphabet)) {
+    return false;
+  }
+  return true;
+}
+
+bool PushDownAutomataLoader::checkStates(const std::vector<std::string>& states) {
+  if (Utility::contains(states, std::string("."))) {
+    std::cerr << "Error: States must not contain the empty symbol." << std::endl;
     return false;
   }
   return true;

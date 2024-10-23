@@ -22,6 +22,7 @@ class PushDownAutomataLoader : public AutomataLoader {
   bool validFile(std::string file_path) override;
   bool checkForDuplicates();
   bool checkFileLength();
+  bool checkStates(const std::vector<std::string>& states);
   bool validateAlphabet(const std::vector<std::string>& alphabet, bool isStackAlphabet);
   bool validateInitialState(const std::vector<std::string>& states, const std::vector<std::string>& initialState);
   bool validateInitialStack(const std::vector<std::string>& states, const std::vector<std::string>& initialState);
