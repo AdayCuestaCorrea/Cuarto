@@ -14,6 +14,13 @@
 #include "../AutomataLoader.h"
 #include "../../Automata/PushDownAutomata/PushDownAutomata.h"
 
+/**
+ * @class PushDownAutomataLoader
+ * @brief A class responsible for loading and validating pushdown automata from a file.
+ * 
+ * This class inherits from AutomataLoader and provides functionality to read, validate,
+ * and load pushdown automata from a specified file path.
+**/
 class PushDownAutomataLoader : public AutomataLoader {
  public:
   std::shared_ptr<Automata> load(std::string file_path) override;

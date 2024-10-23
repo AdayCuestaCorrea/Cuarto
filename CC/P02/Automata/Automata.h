@@ -21,6 +21,18 @@ typedef char Symbol;
 typedef std::vector<std::shared_ptr<State>> States;
 typedef std::vector<Symbol> Alphabet;
 
+/**
+ * @class Automata
+ * @brief Abstract base class representing a finite automaton.
+ *
+ * This class provides the basic structure and interface for a finite automaton.
+ * It includes the states, initial state, and alphabet of the automaton.
+ * Derived classes must implement the execute and print methods.
+ *
+ * @param states A collection of states that the automaton can be in.
+ * @param initial_state A shared pointer to the initial state of the automaton.
+ * @param alphabet The alphabet of the automaton.
+ */
 class Automata {
  public:
   Automata(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet)

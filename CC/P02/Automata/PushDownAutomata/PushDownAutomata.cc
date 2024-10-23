@@ -11,6 +11,20 @@
 
 #include "PushDownAutomata.h"
 
+/**
+ * @brief Prints the details of the PushDownAutomata to the given output stream.
+ *
+ * This function outputs the following details of the PushDownAutomata:
+ * - States: Names of all the states in the automaton.
+ * - Alphabet: Symbols in the input alphabet.
+ * - Stack Alphabet: Symbols in the stack alphabet.
+ * - Initial State: Name of the initial state.
+ * - Initial Stack Symbol: The symbol at the top of the stack if the stack is not empty.
+ * - Transitions: All transitions in the automaton, formatted as:
+ *   [current_state] [input_symbol] [stack_symbol_to_pop] [next_state] [stack_symbols_to_push]
+ *
+ * @param os The output stream to which the details are printed.
+ */
 void PushDownAutomata::print(std::ostream& os) const {
   // Print states
   for (const auto& state : states_) {
@@ -20,14 +34,12 @@ void PushDownAutomata::print(std::ostream& os) const {
 
   // Print alphabet
   for (const auto& symbol : alphabet_) {
-    if (symbol == '.') continue;
     os << symbol << " ";
   }
   os << std::endl;
 
   // Print stack alphabet
   for (const auto& symbol : stack_alphabet_) {
-    if (symbol == '.') continue;
     os << symbol << " ";
   }
   os << std::endl;
@@ -54,11 +66,32 @@ void PushDownAutomata::print(std::ostream& os) const {
   }
 }
 
+/**
+ * @brief Executes the pushdown automaton on a given input word.
+ *
+ * This function initializes the stack with the current stack state and 
+ * starts the recursive execution of the automaton from the initial state.
+ *
+ * @param word The input string to be processed by the automaton.
+ * @return true if the automaton accepts the input word, false otherwise.
+ */
 bool PushDownAutomata::execute(std::string word) {
   std::stack<Symbol> stack = stack_;
   return executeRecursive(initial_state_, word, 0, stack);
 }
 
+/**
+ * @brief Executes the pushdown automaton recursively to determine if the given word is accepted.
+ *
+ * This function attempts to process the given word starting from the current state and using the provided stack.
+ * It follows the transitions defined in the automaton and checks if the word can be fully read while emptying the stack.
+ *
+ * @param current_state The current state of the automaton.
+ * @param word The input word to be processed.
+ * @param index The current index in the word being processed.
+ * @param stack The current stack used by the automaton.
+ * @return true if the word is accepted by the automaton, false otherwise.
+ */
 bool PushDownAutomata::executeRecursive(std::shared_ptr<State> current_state, const std::string& word, int index, std::stack<Symbol>& stack) {
   // Base case: if the entire word has been read and the stack is empty
   if (index == word.size() && stack.empty()) {

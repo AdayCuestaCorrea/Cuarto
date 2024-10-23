@@ -16,6 +16,11 @@
 
 #include "../Transition/Transition.h"
 
+/**
+ * @class State
+ * @brief A class representing a state in an automaton.
+ * 
+ */
 class State {
  public:
   State() {};

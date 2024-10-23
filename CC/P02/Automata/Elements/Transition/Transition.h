@@ -17,6 +17,11 @@
 class State;
 typedef char Symbol;
 
+/**
+ * @class Transition
+ * @brief A class representing a transition in an automaton.
+ * 
+ */
 class Transition {
  public:
   Transition(std::shared_ptr<State> destination, Symbol read, Symbol remove_from_stack, std::string insert_into_stack) : 

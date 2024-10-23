@@ -16,6 +16,11 @@
 #include <vector>
 #include <fstream>
 
+/**
+ * @class AutomataLoader
+ * @brief Abstract base class representing an automata loader.
+ * 
+ */
 class AutomataLoader {
  public:
   virtual std::shared_ptr<Automata> load(std::string file_path) = 0;

@@ -14,6 +14,18 @@
 #include "../Automata.h"
 #include <stack>
 
+/**
+ * @class PushDownAutomata
+ * @brief A class representing a Push Down Automata (PDA), which is a type of automaton that employs a stack.
+ * 
+ * This class extends the Automata class and adds functionality specific to PDAs, including stack operations.
+ * 
+ * @param states A collection of states in the automaton.
+ * @param initial_state The initial state of the automaton.
+ * @param alphabet The input alphabet of the automaton.
+ * @param stack_alphabet The alphabet of the stack used by the automaton.
+ * @param stack The stack used by the automaton.
+ */
 class PushDownAutomata : public Automata {
  public:
   PushDownAutomata(States states, std::shared_ptr<State> initial_state, const Alphabet& alphabet,
