@@ -106,7 +106,7 @@ bool PushDownAutomataLoader::validFile(std::string file_path) {
 
   if (checkForDuplicates() || !checkFileLength() || 
       !validateAlphabet(alphabet, false) || !validateAlphabet(stack_alphabet, true) || 
-      !validateInitial(states, lines[3]) || !validateInitial(stack_alphabet, lines[4]) || 
+      !validateInitialState(states, lines[3]) || !validateInitialStack(stack_alphabet, lines[4]) || 
       !validateTransitions(states, alphabet, stack_alphabet)) {
     return false;
   }
@@ -143,9 +143,17 @@ bool PushDownAutomataLoader::validateAlphabet(const std::vector<std::string>& al
   return true;
 }
 
-bool PushDownAutomataLoader::validateInitial(const std::vector<std::string>& states, const std::vector<std::string>& initialState) {
+bool PushDownAutomataLoader::validateInitialState(const std::vector<std::string>& states, const std::vector<std::string>& initialState) {
   if (!Utility::contains(states, initialState[0]) || initialState.size() > 1) {
     std::cerr << "Error: Initial state must be unique and exist." << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool PushDownAutomataLoader::validateInitialStack(const std::vector<std::string>& states, const std::vector<std::string>& initialState) {
+  if (!Utility::contains(states, initialState[0]) || initialState.size() > 1) {
+    std::cerr << "Error: Initial stack symbol must be unique and exist." << std::endl;
     return false;
   }
   return true;
