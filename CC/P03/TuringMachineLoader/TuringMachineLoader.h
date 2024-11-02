@@ -15,12 +15,13 @@
 #include "../TuringMachines/TuringMachine.h"
 #include <string>
 #include <fstream>
+#include <unordered_set>
 
 using json = nlohmann::json;
 
 class TuringMachineLoader {
  public:
-  virtual std::shared_ptr<TuringMachine> execute(const std::string& input) = 0;
+  virtual std::shared_ptr<TuringMachine> load(const std::string& file_path) = 0;
  protected:
-  virtual bool validFile(std::string file_path) = 0;
+  virtual bool validFile(const std::string& file_path) = 0;
 };

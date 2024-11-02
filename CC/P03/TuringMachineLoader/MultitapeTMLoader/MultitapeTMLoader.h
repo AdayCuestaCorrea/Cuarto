@@ -15,7 +15,7 @@
 
 class MultitapeTMLoader : public TuringMachineLoader {
  public:
-  std::shared_ptr<TuringMachine> load(std::string file_path) override;
+  std::shared_ptr<TuringMachine> load(const std::string& file_path) override;
  protected:
-  bool validFile(std::string file_path) override;
+  bool validFile(const std::string& file_path) override;
 };

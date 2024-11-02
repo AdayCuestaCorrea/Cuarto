@@ -14,20 +14,14 @@
 #include "../Types/MovableTape.h"
 #include "../Types/StayableTape.h"
 
-class AdvancedTMTape : public MovableTape, public StayableTape {
+class LRSTuringMachineTape : public MovableTape, public StayableTape {
  public:
-  AdvancedTMTape(std::string content) {
-    for (char symbol : content) {
-      tape_.push_back(symbol);
-    }
-    head_position_ = 0;
-  }
+  LRSTuringMachineTape(const Alphabet& tape_alphabet) : Tape(tape_alphabet) {}
+  LRSTuringMachineTape(const Alphabet& tape_alphabet, std::string content) : Tape(tape_alphabet, content) {}
 
   char read() const override;
 
   void write(char symbol) override;
-
-  std::string getContent() const override;
 
   void moveLeft() override;
 

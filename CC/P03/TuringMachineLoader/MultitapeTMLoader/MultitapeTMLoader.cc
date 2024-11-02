@@ -11,7 +11,11 @@
 
 #include "MultitapeTMLoader.h"
 
-std::shared_ptr<TuringMachine> MultitapeTMLoader::load(std::string file_path) {
-    
+std::shared_ptr<TuringMachine> MultitapeTMLoader::load(const std::string& file_path) {
+  if (!validFile(file_path)) throw std::runtime_error("Invalid file: " + file_path);
   return nullptr;
+}
+
+bool MultitapeTMLoader::validFile(const std::string& file_path) {
+  return false;
 }

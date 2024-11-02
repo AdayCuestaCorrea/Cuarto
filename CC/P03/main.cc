@@ -9,10 +9,19 @@
   * Fecha: 01/11/2024
   */
 
-
+#include "Utility/Utility.h"
+#include "TuringMachineLoader/LRSTuringMachineLoader/LRSTuringMachineLoader.h"
 #include <iostream>
 
-int main() {
-
+int main(int argc, char* argv[]) {
+  try {
+    Utility::help(argc, argv);
+    std::shared_ptr<TuringMachineLoader> loader = std::make_shared<LRSTuringMachineLoader>();
+    std::shared_ptr<TuringMachine> turing_machine = loader->load(argv[1]);
+    std::cout << *turing_machine << std::endl;
+  } catch (const std::runtime_error& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
+  }
   return 0;
 }

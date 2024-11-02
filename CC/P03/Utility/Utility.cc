@@ -33,9 +33,30 @@ namespace Utility {
     std::string fileName = argv[1];
     if (fileName == "-h" || fileName == "--help") {
       std::cout << "Usage: " << argv[0] << " <file_path>" << std::endl;
-      std::cout << "This program reads a file containing a pushdown automata, if the file is not correct the program will stop." << std::endl;
-      std::cout << "If the file is correct, you will be able to input words to check if they are accepted by the automata." << std::endl;
+      std::cout << "This program reads a file containing a Turing Machine, if the file is not correct the program will stop." << std::endl;
+      std::cout << "If the file is correct, you will be able to input words to check if they are accepted by the Turing Machine." << std::endl;
+      std::cout << "The file must be a JSON file with the following fields:" << std::endl;
+      std::cout << "  - states: an array of strings representing the states of the Turing Machine" << std::endl;
+      std::cout << "  - input_alphabet: an array of single-character strings representing the input alphabet" << std::endl;
+      std::cout << "  - tape_alphabet: an array of single-character strings representing the tape alphabet" << std::endl;
+      std::cout << "  - initial_state: a string representing the initial state of the Turing Machine" << std::endl;
+      std::cout << "  - blank_symbol: a single-character string representing the blank symbol of the Turing Machine" << std::endl;
+      std::cout << "  - final_states: an array of strings representing the final states of the Turing Machine" << std::endl;
+      std::cout << "  - transitions: an array of objects representing the transitions of the Turing Machine" << std::endl;
+      std::cout << "The transitions must have the following fields:" << std::endl;
+      std::cout << "  - current_state: a string representing the current state of the transition" << std::endl;
+      std::cout << "  - read_symbol: a string representing the symbol read by the transition" << std::endl;
+      std::cout << "  - next_state: a string representing the next state of the transition" << std::endl;
+      std::cout << "  - write_symbol: a string representing the symbol written by the transition" << std::endl;
+      std::cout << "  - move_direction: a character representing the direction in which the tape head moves" << std::endl;
       exit(0);
+    }
+
+    // Check if the file extension is .json
+    if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".json") {
+      std::cerr << "Error: The file must have a .json extension." << std::endl;
+      std::cerr << "Usage: " << argv[0] << " <file_path>" << std::endl;
+      exit(1);
     }
   }
 

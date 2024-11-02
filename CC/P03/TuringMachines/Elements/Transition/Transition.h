@@ -24,17 +24,17 @@ typedef char Symbol;
  */
 class Transition {
  public:
-  Transition(std::shared_ptr<State> destination, Symbol read, Symbol remove_from_stack, std::string insert_into_stack) : 
-             destination_(destination), read_(read), remove_from_stack_(remove_from_stack),
-             insert_into_stack_(insert_into_stack) {};
-  std::shared_ptr<State> get_destination() const { return destination_; }
-  Symbol get_read() const { return read_; }
-  Symbol get_remove_from_stack() const { return remove_from_stack_; }
-  std::string get_insert_into_stack() const { return insert_into_stack_; }
+  Transition(std::shared_ptr<State> destination, Symbol read, Symbol write, char movement) : 
+             destination_(destination), read_(read), write_(write),
+             movement_(movement) {};
+  std::shared_ptr<State> getDestination() const { return destination_; }
+  Symbol getRead() const { return read_; }
+  Symbol getWrite() const { return write_; }
+  char getMovement() const { return movement_; }
 
  private:
   std::shared_ptr<State> destination_;
   Symbol read_;
-  Symbol remove_from_stack_;
-  std::string insert_into_stack_;
+  Symbol write_;
+  char movement_;
 };
