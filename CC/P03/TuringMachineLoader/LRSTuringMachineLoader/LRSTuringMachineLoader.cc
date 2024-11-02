@@ -176,8 +176,8 @@ bool LRSTuringMachineLoader::checkInitialState(const json& j) {
 }
 
 bool LRSTuringMachineLoader::checkBlankSymbol(const json& j) {
-  if (!j["blank_symbol"].is_string() || j["blank_symbol"].empty()) {
-    std::cerr << "Error: 'blank_symbol' must be a non-empty string" << std::endl;
+  if (!j["blank_symbol"].is_string() || j["blank_symbol"].empty() || j["blank_symbol"] != ".") {
+    std::cerr << "Error: 'blank_symbol' must be a non-empty string with a dot -> \".\"" << std::endl;
     return false;
   }
   return true;
