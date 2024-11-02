@@ -11,9 +11,7 @@
 
 #pragma once
 
-#include "../Tape.h"
-
-class MovableTape : public virtual Tape {
+class MovableTape {
  public:
   virtual void moveLeft() = 0;
   virtual void moveRight() = 0;

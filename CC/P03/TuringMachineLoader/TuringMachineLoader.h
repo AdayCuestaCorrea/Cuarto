@@ -22,6 +22,7 @@ using json = nlohmann::json;
 class TuringMachineLoader {
  public:
   virtual std::shared_ptr<TuringMachine> load(const std::string& file_path) = 0;
+  static std::string detectMachineType(const std::string& file_path);
  protected:
   virtual bool validFile(const std::string& file_path) = 0;
 };

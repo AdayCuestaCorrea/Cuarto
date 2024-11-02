@@ -1,0 +1,28 @@
+{
+  "comments": [
+    "Máquina de Turing Multicinta, dice si la primera cinta tiene más 0 y 1 que la segunda"
+  ],
+  "states": ["q0", "q1", "q2", "q3"],
+  "input_alphabet": ["0", "1"],
+  "tape_alphabet": [".", "0", "1"],
+  "initial_state": "q0",
+  "blank_symbol": ".",
+  "final_states": ["q3"],
+  "transitions": [
+      {"current_state": "q0", "read_symbols": ["1", "."], "next_state": "q0", "write_symbols": ["1", "."], "move_directions": ["R", "S"]},
+      {"current_state": "q0", "read_symbols": ["1", "1"], "next_state": "q0", "write_symbols": ["1", "1"], "move_directions": ["R", "R"]},
+      {"current_state": "q0", "read_symbols": ["1", "0"], "next_state": "q0", "write_symbols": ["1", "0"], "move_directions": ["R", "S"]},
+      {"current_state": "q0", "read_symbols": ["0", "1"], "next_state": "q0", "write_symbols": ["0", "1"], "move_directions": ["S", "R"]},
+      {"current_state": "q0", "read_symbols": ["0", "0"], "next_state": "q0", "write_symbols": ["0", "0"], "move_directions": ["R", "R"]},
+      {"current_state": "q0", "read_symbols": ["0", "."], "next_state": "q1", "write_symbols": ["0", "."], "move_directions": ["S", "S"]},
+      {"current_state": "q1", "read_symbols": ["0", "."], "next_state": "q1", "write_symbols": ["0", "."], "move_directions": ["R", "S"]},
+      {"current_state": "q1", "read_symbols": ["1", "."], "next_state": "q1", "write_symbols": ["1", "."], "move_directions": ["R", "S"]},
+      {"current_state": "q1", "read_symbols": [".", "."], "next_state": "q2", "write_symbols": [".", "."], "move_directions": ["L", "L"]},
+      {"current_state": "q2", "read_symbols": ["0", "."], "next_state": "q2", "write_symbols": ["0", "."], "move_directions": ["L", "S"]},
+      {"current_state": "q2", "read_symbols": ["1", "1"], "next_state": "q2", "write_symbols": ["1", "1"], "move_directions": ["L", "L"]},
+      {"current_state": "q2", "read_symbols": ["1", "0"], "next_state": "q2", "write_symbols": ["1", "0"], "move_directions": ["S", "L"]},
+      {"current_state": "q2", "read_symbols": ["0", "1"], "next_state": "q2", "write_symbols": ["0", "1"], "move_directions": ["L", "S"]},
+      {"current_state": "q2", "read_symbols": ["0", "0"], "next_state": "q2", "write_symbols": ["0", "0"], "move_directions": ["L", "L"]},
+      {"current_state": "q2", "read_symbols": ["1", "."], "next_state": "q3", "write_symbols": ["1", "."], "move_directions": ["S", "S"]}
+  ]
+}

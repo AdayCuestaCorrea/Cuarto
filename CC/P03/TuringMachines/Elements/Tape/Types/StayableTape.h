@@ -11,9 +11,7 @@
 
 #pragma once
 
-#include "../Tape.h"
-
-class StayableTape : public virtual Tape {
+class StayableTape {
  public:
   virtual void stay() = 0;
 };

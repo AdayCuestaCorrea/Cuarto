@@ -12,10 +12,26 @@
 #pragma once
 
 #include "../TuringMachineLoader.h"
+#include "../../TuringMachines/MultitapeTuringMachine/MultitapeTuringMachine.h"
 
 class MultitapeTMLoader : public TuringMachineLoader {
  public:
   std::shared_ptr<TuringMachine> load(const std::string& file_path) override;
  protected:
   bool validFile(const std::string& file_path) override;
+ private:
+  std::vector<std::shared_ptr<State>> loadStates(const json& j);
+  Alphabet loadAlphabet(const json& j, const std::string& key);
+  std::vector<LRSTuringMachineTape> loadTapes(const json& j);
+  void loadTransitions(const json& j, const std::vector<std::shared_ptr<State>>& states);
+  bool checkRequiredFields(const json& j);
+  bool checkStates(const json& j);
+  bool checkAlphabets(const json& j);
+  bool checkInitialState(const json& j);
+  bool checkBlankSymbol(const json& j);
+  bool checkFinalStates(const json& j);
+  bool checkTransitions(const json& j);
+  bool checkTransitionFields(const json& transition);
+  bool checkTransitionSymbols(const json& transition, const std::unordered_set<std::string>& input_alphabet_set, const std::unordered_set<std::string>& tape_alphabet_set);
+  bool checkTransitionStates(const json& transition, const std::unordered_set<std::string>& states_set);
 };

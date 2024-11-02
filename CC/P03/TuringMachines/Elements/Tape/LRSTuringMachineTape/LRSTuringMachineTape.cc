@@ -10,6 +10,7 @@
   */
 
 #include "LRSTuringMachineTape.h"
+#include <iostream>
 
 char LRSTuringMachineTape::read() const {
   return tape_[head_position_];

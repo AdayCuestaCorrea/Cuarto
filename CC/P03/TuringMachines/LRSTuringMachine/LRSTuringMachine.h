@@ -13,13 +13,15 @@
 
 #include "../TuringMachine.h"
 #include "../Elements/Tape/LRSTuringMachineTape/LRSTuringMachineTape.h"
+#include "../Elements/Transition/Types/SingleTapeTransition.h"
 
 class LRSTuringMachine : public TuringMachine {
  public:
-  LRSTuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet, std::shared_ptr<Tape> tape)
+  LRSTuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet, LRSTuringMachineTape tape)
                        : TuringMachine(states, initial_state, alphabet), tape_(tape) {}
-  bool execute(std::string word) override;
+
+  std::string execute(InputType input) override;
   void print(std::ostream& os) const override;
  private:
-  std::shared_ptr<Tape> tape_;
+  LRSTuringMachineTape tape_;
 };

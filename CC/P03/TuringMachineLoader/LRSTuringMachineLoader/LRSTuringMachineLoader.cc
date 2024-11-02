@@ -21,7 +21,7 @@ std::shared_ptr<TuringMachine> LRSTuringMachineLoader::load(const std::string& f
   States states = loadStates(j);
   Alphabet input_alphabet = loadAlphabet(j, "input_alphabet");
   Alphabet tape_alphabet = loadAlphabet(j, "tape_alphabet");
-  std::shared_ptr<Tape> tape = loadTape(j);
+  LRSTuringMachineTape tape = loadTape(j);
 
   loadTransitions(j, states);
 
@@ -60,9 +60,9 @@ Alphabet LRSTuringMachineLoader::loadAlphabet(const json& j, const std::string& 
   return alphabet;
 }
 
-std::shared_ptr<Tape> LRSTuringMachineLoader::loadTape(const json& j) {
+LRSTuringMachineTape LRSTuringMachineLoader::loadTape(const json& j) {
   Alphabet tape_alphabet = loadAlphabet(j, "tape_alphabet");
-  return std::make_shared<LRSTuringMachineTape>(tape_alphabet);
+  return LRSTuringMachineTape(tape_alphabet);
 }
 
 void LRSTuringMachineLoader::loadTransitions(const json& j, const std::vector<std::shared_ptr<State>>& states) {
@@ -83,7 +83,13 @@ void LRSTuringMachineLoader::loadTransitions(const json& j, const std::vector<st
       }
     }
 
-    Transition new_transition(next_state, transition["read_symbol"].get<std::string>()[0], transition["write_symbol"].get<std::string>()[0], transition["move_direction"].get<std::string>()[0]);
+    auto new_transition = std::make_shared<SingleTapeTransition>(
+      next_state,
+      transition["read_symbol"].get<std::string>()[0],
+      transition["write_symbol"].get<std::string>()[0],
+      transition["move_direction"].get<std::string>()[0]
+    );
+
     current_state->addTransition(new_transition);
   }
 }

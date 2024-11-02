@@ -22,7 +22,7 @@ class LRSTuringMachineLoader : public TuringMachineLoader {
  private:
   std::vector<std::shared_ptr<State>> loadStates(const json& j);
   Alphabet loadAlphabet(const json& j, const std::string& key);
-  std::shared_ptr<Tape> loadTape(const json& j);
+  LRSTuringMachineTape loadTape(const json& j);
   void loadTransitions(const json& j, const std::vector<std::shared_ptr<State>>& states);
 
   bool checkRequiredFields(const json& j);

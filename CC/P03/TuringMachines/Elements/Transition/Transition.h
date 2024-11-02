@@ -12,6 +12,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <memory>
 
 class State;
@@ -24,17 +25,9 @@ typedef char Symbol;
  */
 class Transition {
  public:
-  Transition(std::shared_ptr<State> destination, Symbol read, Symbol write, char movement) : 
-             destination_(destination), read_(read), write_(write),
-             movement_(movement) {};
-  std::shared_ptr<State> getDestination() const { return destination_; }
-  Symbol getRead() const { return read_; }
-  Symbol getWrite() const { return write_; }
-  char getMovement() const { return movement_; }
-
- private:
-  std::shared_ptr<State> destination_;
-  Symbol read_;
-  Symbol write_;
-  char movement_;
+  virtual ~Transition() = default;
+  virtual std::shared_ptr<State> getDestination() const = 0;
+  virtual std::vector<Symbol> getReadSymbols() const = 0;
+  virtual std::vector<Symbol> getWriteSymbols() const = 0;
+  virtual std::vector<char> getMoveDirections() const = 0;
 };

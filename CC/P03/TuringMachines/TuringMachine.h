@@ -13,18 +13,20 @@
 
 #include "Elements/State/State.h"
 #include <iostream>
-
+#include <variant>
 #include <memory>
 
 typedef char Symbol;
 typedef std::vector<std::shared_ptr<State>> States;
 typedef std::vector<Symbol> Alphabet;
+typedef std::variant<std::string, std::vector<std::string>> InputType;
 
 class TuringMachine {
  public:
   TuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet)
            : states_(states), initial_state_(initial_state), alphabet_(alphabet) {}
-  virtual bool execute(std::string word) = 0;
+           
+  virtual std::string execute(InputType input) = 0;
   virtual void print(std::ostream& os) const = 0; // Pure virtual function
 
   friend std::ostream& operator<<(std::ostream& os, const TuringMachine& machine) {

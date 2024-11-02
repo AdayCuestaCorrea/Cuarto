@@ -11,9 +11,48 @@
 
 #include "LRSTuringMachine.h"
 
-bool LRSTuringMachine::execute(std::string word) {
+std::string LRSTuringMachine::execute(InputType input) {
+  if (!std::holds_alternative<std::string>(input)) {
+    throw std::runtime_error("Invalid input type");
+  }
+  tape_.setContent(std::get<std::string>(input));
+  std::shared_ptr<State> current_state = initial_state_;
+  while (true) {
+    char read_symbol = tape_.read();
+    bool transition_found = false;
 
-  return true; 
+    for (const auto& transition : current_state->getTransitions()) {
+      auto single_tape_transition = std::dynamic_pointer_cast<SingleTapeTransition>(transition);
+      if (single_tape_transition && single_tape_transition->getReadSymbols()[0] == read_symbol) {
+        tape_.write(single_tape_transition->getWriteSymbols()[0]);
+        switch (single_tape_transition->getMoveDirections()[0]) {
+          case 'L':
+            tape_.moveLeft();
+            break;
+          case 'R':
+            tape_.moveRight();
+            break;
+          case 'S':
+            tape_.stay();
+            break;
+          default:
+            throw std::runtime_error("Invalid movement direction");
+        }
+        current_state = single_tape_transition->getDestination();
+        transition_found = true;
+        break;
+      }
+    }
+
+    if (!transition_found) {
+      break;
+    }
+  }
+  std::string result;
+  if (current_state->isFinal()) result = "Turing Machine stopped on an accepted state.\nTape content: " + tape_.getContent();
+  else result = "Turing Machine didn't stop on an accepted state.\nTape content: " + tape_.getContent();
+  
+  return result;
 }
 
 void LRSTuringMachine::print(std::ostream& os) const {
@@ -29,7 +68,7 @@ void LRSTuringMachine::print(std::ostream& os) const {
   }
   os << std::endl;
   os << "Tape Alphabet: ";
-  for (const auto& symbol : tape_->getAlphabet()) {
+  for (const auto& symbol : tape_.getAlphabet()) {
     os << symbol << " ";
   }
   os << std::endl;
@@ -44,13 +83,16 @@ void LRSTuringMachine::print(std::ostream& os) const {
   bool first_transition = true;
   for (const auto& state : states_) {
     for (const auto& transition : state->getTransitions()) {
-      if (!first_transition) os << std::endl;
-      os << "  " << state->getName() << " " 
-      << transition.getRead() << " -> " 
-      << transition.getDestination()->getName() << " " 
-      << transition.getWrite() << " " << 
-      transition.getMovement();
-      first_transition = false;
+      auto single_tape_transition = std::dynamic_pointer_cast<SingleTapeTransition>(transition);
+      if (single_tape_transition) {
+        if (!first_transition) os << std::endl;
+        os << "  " << state->getName() << " " 
+           << single_tape_transition->getReadSymbols()[0] << " -> " 
+           << single_tape_transition->getDestination()->getName() << " " 
+           << single_tape_transition->getWriteSymbols()[0] << " " 
+           << single_tape_transition->getMoveDirections()[0];
+        first_transition = false;
+      }
     }
   }
 }
