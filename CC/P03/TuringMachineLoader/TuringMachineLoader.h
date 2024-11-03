@@ -25,4 +25,12 @@ class TuringMachineLoader {
   static std::string detectMachineType(const std::string& file_path);
  protected:
   virtual bool validFile(const std::string& file_path) = 0;
+  std::vector<std::shared_ptr<State>> loadStates(const json& j);
+  Alphabet loadAlphabet(const json& j, const std::string& key);
+  bool checkStates(const json& j);
+  bool checkAlphabets(const json& j);
+  bool checkInitialState(const json& j);
+  bool checkBlankSymbol(const json& j);
+  bool checkFinalStates(const json& j);
+  bool checkTransitionStates(const json& transition, const std::unordered_set<std::string>& states_set);
 };

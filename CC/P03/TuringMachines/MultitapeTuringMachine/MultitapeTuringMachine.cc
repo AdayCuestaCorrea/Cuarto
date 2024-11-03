@@ -17,63 +17,80 @@ std::string MultitapeTuringMachine::execute(InputType input) {
   }
 
   std::vector<std::string> words = std::get<std::vector<std::string>>(input);
-
-  for (size_t i = words.size(); i < tape_.size(); ++i) {
-    words.push_back(".");
-  }
-
-  if (words.size() != tape_.size()) {
-    throw std::runtime_error("Number of input words does not match number of tapes");
-  }
-
-  for (size_t i = 0; i < words.size(); ++i) {
-    tape_[i].setContent(words[i]);
-  }
+  initializeTapes(words);
 
   std::shared_ptr<State> current_state = initial_state_;
   while (true) {
-    std::vector<char> read_symbols;
-    for (auto& tape : tape_) {
-      read_symbols.push_back(tape.read());
-    }
+    std::vector<char> read_symbols = readFromTapes();
+    if (!processTransition(current_state, read_symbols)) break;
+  }
 
-    bool transition_found = false;
-    for (const auto& transition : current_state->getTransitions()) {
-      const auto& multi_tape_transition = static_cast<MultiTapeTransition&>(*transition);
-      if (multi_tape_transition.getReadSymbols() == read_symbols) {
-        const auto& write_symbols = multi_tape_transition.getWriteSymbols();
-        const auto& move_directions = multi_tape_transition.getMoveDirections();
-        for (size_t i = 0; i < tape_.size(); ++i) {
-          tape_[i].write(write_symbols[i]);
-          switch (move_directions[i]) {
-            case 'L':
-              tape_[i].moveLeft();
-              break;
-            case 'R':
-              tape_[i].moveRight();
-              break;
-            case 'S':
-              tape_[i].stay();
-              break;
-            default:
-              throw std::runtime_error("Invalid movement direction");
-          }
-        }
+  return generateResult(current_state);
+}
 
-        current_state = multi_tape_transition.getDestination();
-        transition_found = true;
-        break;
-      }
-    }
-
-    if (!transition_found) {
-      break;
+bool MultitapeTuringMachine::processTransition(std::shared_ptr<State> &current_state, Alphabet &read_symbols) {
+  for (const auto &transition : current_state->getTransitions()) {
+    if (transition->getReadSymbols() == read_symbols) {
+      applyTransition(transition);
+      current_state = transition->getDestination();
+      return true;
     }
   }
-  std::string result;
-  if (current_state->isFinal()) result = "Turing Machine stopped on an accepted state.\nTape content:\n" + getTapeContents();
-  else result = "Turing Machine didn't stop on an accepted state.\nTape content:\n" + getTapeContents();
+  return false;
+}
 
+void MultitapeTuringMachine::initializeTapes(const std::vector<std::string>& words) {
+  std::vector<std::string> adjusted_words = words;
+  for (size_t i = adjusted_words.size(); i < tape_.size(); ++i) {
+    adjusted_words.push_back(".");
+  }
+
+  if (adjusted_words.size() != tape_.size()) {
+    throw std::runtime_error("Number of input words does not match number of tapes");
+  }
+
+  for (size_t i = 0; i < adjusted_words.size(); ++i) {
+    tape_[i].setContent(adjusted_words[i]);
+  }
+}
+
+std::vector<char> MultitapeTuringMachine::readFromTapes() {
+  std::vector<char> read_symbols;
+  for (auto& tape : tape_) {
+    read_symbols.push_back(tape.read());
+  }
+  return read_symbols;
+}
+
+void MultitapeTuringMachine::applyTransition(const std::shared_ptr<Transition> transition) {
+  const auto& write_symbols = transition->getWriteSymbols();
+  const auto& move_directions = transition->getMoveDirections();
+
+  for (size_t i = 0; i < tape_.size(); ++i) {
+    tape_[i].write(write_symbols[i]);
+    switch (move_directions[i]) {
+      case 'L':
+        tape_[i].moveLeft();
+        break;
+      case 'R':
+        tape_[i].moveRight();
+        break;
+      case 'S':
+        tape_[i].stay();
+        break;
+      default:
+        throw std::runtime_error("Invalid movement direction");
+    }
+  }
+}
+
+std::string MultitapeTuringMachine::generateResult(const std::shared_ptr<State>& current_state) {
+  std::string result;
+  if (current_state->isFinal()) {
+    result = "Turing Machine stopped on an accepted state.\nTape content:\n" + getTapeContents();
+  } else {
+    result = "Turing Machine didn't stop on an accepted state.\nTape content:\n" + getTapeContents();
+  }
   return result;
 }
 

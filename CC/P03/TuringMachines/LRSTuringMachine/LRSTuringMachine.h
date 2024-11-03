@@ -24,4 +24,7 @@ class LRSTuringMachine : public TuringMachine {
   void print(std::ostream& os) const override;
  private:
   LRSTuringMachineTape tape_;
+  bool processTransitions(std::shared_ptr<State>& current_state, char read_symbol);
+  void moveTape(char direction);
+  std::string generateResult(const std::shared_ptr<State>& current_state);
 };

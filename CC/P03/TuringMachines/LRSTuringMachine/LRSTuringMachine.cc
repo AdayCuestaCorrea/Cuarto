@@ -15,43 +15,52 @@ std::string LRSTuringMachine::execute(InputType input) {
   if (!std::holds_alternative<std::string>(input)) {
     throw std::runtime_error("Invalid input type");
   }
+
   tape_.setContent(std::get<std::string>(input));
   std::shared_ptr<State> current_state = initial_state_;
   while (true) {
     char read_symbol = tape_.read();
-    bool transition_found = false;
+    if (!processTransitions(current_state, read_symbol)) break;
+  }
 
-    for (const auto& transition : current_state->getTransitions()) {
-      auto single_tape_transition = std::dynamic_pointer_cast<SingleTapeTransition>(transition);
-      if (single_tape_transition && single_tape_transition->getReadSymbols()[0] == read_symbol) {
-        tape_.write(single_tape_transition->getWriteSymbols()[0]);
-        switch (single_tape_transition->getMoveDirections()[0]) {
-          case 'L':
-            tape_.moveLeft();
-            break;
-          case 'R':
-            tape_.moveRight();
-            break;
-          case 'S':
-            tape_.stay();
-            break;
-          default:
-            throw std::runtime_error("Invalid movement direction");
-        }
-        current_state = single_tape_transition->getDestination();
-        transition_found = true;
-        break;
-      }
-    }
+  return generateResult(current_state);
+}
 
-    if (!transition_found) {
-      break;
+bool LRSTuringMachine::processTransitions(std::shared_ptr<State>& current_state, char read_symbol) {
+  for (const auto& transition : current_state->getTransitions()) {
+    if (transition->getReadSymbols()[0] == read_symbol) {
+      tape_.write(transition->getWriteSymbols()[0]);
+      moveTape(transition->getMoveDirections()[0]);
+      current_state = transition->getDestination();
+      return true;
     }
   }
+  return false;
+}
+
+void LRSTuringMachine::moveTape(char direction) {
+  switch (direction) {
+    case 'L':
+      tape_.moveLeft();
+      break;
+    case 'R':
+      tape_.moveRight();
+      break;
+    case 'S':
+      tape_.stay();
+      break;
+    default:
+      throw std::runtime_error("Invalid movement direction");
+  }
+}
+
+std::string LRSTuringMachine::generateResult(const std::shared_ptr<State>& current_state) {
   std::string result;
-  if (current_state->isFinal()) result = "Turing Machine stopped on an accepted state.\nTape content: " + tape_.getContent();
-  else result = "Turing Machine didn't stop on an accepted state.\nTape content: " + tape_.getContent();
-  
+  if (current_state->isFinal()) {
+    result = "Turing Machine stopped on an accepted state.\nTape content: " + tape_.getContent();
+  } else {
+    result = "Turing Machine didn't stop on an accepted state.\nTape content: " + tape_.getContent();
+  }
   return result;
 }
 

@@ -32,34 +32,6 @@ std::shared_ptr<TuringMachine> LRSTuringMachineLoader::load(const std::string& f
   return std::make_shared<LRSTuringMachine>(states, initial_state, input_alphabet, tape);
 }
 
-std::vector<std::shared_ptr<State>> LRSTuringMachineLoader::loadStates(const json& j) {
-  std::vector<std::shared_ptr<State>> states;
-  for (const auto& state : j["states"]) {
-    states.push_back(std::make_shared<State>(state.get<std::string>(), false));
-  }
-
-  for (const auto& state : states) {
-    if (state->getName() == j["initial_state"].get<std::string>()) {
-      state->setInitial(true);
-    }
-    for (const auto& final_state : j["final_states"]) {
-      if (state->getName() == final_state.get<std::string>()) {
-        state->setFinal(true);
-      }
-    }
-  }
-
-  return states;
-}
-
-Alphabet LRSTuringMachineLoader::loadAlphabet(const json& j, const std::string& key) {
-  Alphabet alphabet;
-  for (const auto& symbol : j[key]) {
-    alphabet.push_back(symbol.get<std::string>()[0]);
-  }
-  return alphabet;
-}
-
 LRSTuringMachineTape LRSTuringMachineLoader::loadTape(const json& j) {
   Alphabet tape_alphabet = loadAlphabet(j, "tape_alphabet");
   return LRSTuringMachineTape(tape_alphabet);
@@ -83,7 +55,7 @@ void LRSTuringMachineLoader::loadTransitions(const json& j, const std::vector<st
       }
     }
 
-    auto new_transition = std::make_shared<SingleTapeTransition>(
+    std::shared_ptr<Transition> new_transition = std::make_shared<SingleTapeTransition>(
       next_state,
       transition["read_symbol"].get<std::string>()[0],
       transition["write_symbol"].get<std::string>()[0],
@@ -126,86 +98,6 @@ bool LRSTuringMachineLoader::checkRequiredFields(const json& j) {
   return true;
 }
 
-bool LRSTuringMachineLoader::checkStates(const json& j) {
-  if (!j["states"].is_array() || j["states"].empty()) {
-    std::cerr << "Error: 'states' must be a non-empty array" << std::endl;
-    return false;
-  }
-  return true;
-}
-
-bool LRSTuringMachineLoader::checkAlphabets(const json& j) {
-  if (!j["input_alphabet"].is_array() || j["input_alphabet"].empty()) {
-    std::cerr << "Error: 'input_alphabet' must be a non-empty array" << std::endl;
-    return false;
-  }
-  for (const auto& symbol : j["input_alphabet"]) {
-    if (!symbol.is_string() || symbol.get<std::string>().length() != 1) {
-      std::cerr << "Error: 'input_alphabet' must contain single-character strings" << std::endl;
-      return false;
-    }
-  }
-
-  if (!j["tape_alphabet"].is_array() || j["tape_alphabet"].empty()) {
-    std::cerr << "Error: 'tape_alphabet' must be a non-empty array" << std::endl;
-    return false;
-  }
-  for (const auto& symbol : j["tape_alphabet"]) {
-    if (!symbol.is_string() || symbol.get<std::string>().length() != 1) {
-      std::cerr << "Error: 'tape_alphabet' must contain single-character strings" << std::endl;
-      return false;
-    }
-  }
-
-  std::unordered_set<std::string> tape_alphabet_set(j["tape_alphabet"].begin(), j["tape_alphabet"].end());
-  for (const auto& symbol : j["input_alphabet"]) {
-    if (tape_alphabet_set.find(symbol.get<std::string>()) == tape_alphabet_set.end()) {
-      std::cerr << "Error: 'input_alphabet' must be contained in 'tape_alphabet'" << std::endl;
-      return false;
-    }
-  }
-
-  return true;
-}
-
-bool LRSTuringMachineLoader::checkInitialState(const json& j) {
-  if (!j["initial_state"].is_string() || j["initial_state"].empty()) {
-    std::cerr << "Error: 'initial_state' must be a non-empty string" << std::endl;
-    return false;
-  }
-  std::unordered_set<std::string> states_set(j["states"].begin(), j["states"].end());
-  if (states_set.find(j["initial_state"].get<std::string>()) == states_set.end()) {
-    std::cerr << "Error: 'initial_state' must be contained in 'states'" << std::endl;
-    return false;
-  }
-  return true;
-}
-
-bool LRSTuringMachineLoader::checkBlankSymbol(const json& j) {
-  if (!j["blank_symbol"].is_string() || j["blank_symbol"].empty() || j["blank_symbol"] != ".") {
-    std::cerr << "Error: 'blank_symbol' must be a non-empty string with a dot -> \".\"" << std::endl;
-    return false;
-  }
-  return true;
-}
-
-bool LRSTuringMachineLoader::checkFinalStates(const json& j) {
-  if (!j["final_states"].is_array() || j["final_states"].empty()) {
-    std::cerr << "Error: 'final_states' must be a non-empty array" << std::endl;
-    return false;
-  }
-
-  std::unordered_set<std::string> states_set(j["states"].begin(), j["states"].end());
-  for (const auto& state : j["final_states"]) {
-    if (states_set.find(state.get<std::string>()) == states_set.end()) {
-      std::cerr << "Error: 'final_states' must be contained in 'states'" << std::endl;
-      return false;
-    }
-  }
-
-  return true;
-}
-
 bool LRSTuringMachineLoader::checkTransitions(const json& j) {
   if (!j["transitions"].is_array() || j["transitions"].empty()) {
     std::cerr << "Error: 'transitions' must be a non-empty array" << std::endl;
@@ -219,11 +111,9 @@ bool LRSTuringMachineLoader::checkTransitions(const json& j) {
 
   for (const auto& transition : j["transitions"]) {
     if (!checkTransitionFields(transition)) return false;
-
     if (!checkTransitionSymbols(transition, input_alphabet_set, tape_alphabet_set)) {
       return false;
     }
-
     if (!checkTransitionStates(transition, states_set)) return false;
     
     std::string key = transition["current_state"].get<std::string>() + "_" + transition["read_symbol"].get<std::string>();
@@ -264,20 +154,6 @@ bool LRSTuringMachineLoader::checkTransitionSymbols(const json& transition, cons
 
   if (tape_alphabet_set.find(transition["write_symbol"].get<std::string>()) == tape_alphabet_set.end()) {
     std::cerr << "Error: 'write_symbol' in transition must be in 'tape_alphabet'" << std::endl;
-    return false;
-  }
-
-  return true;
-}
-
-bool LRSTuringMachineLoader::checkTransitionStates(const json& transition, const std::unordered_set<std::string>& states_set) {
-  if (states_set.find(transition["current_state"].get<std::string>()) == states_set.end()) {
-    std::cerr << "Error: 'current_state' in transition must be in 'states'" << std::endl;
-    return false;
-  }
-
-  if (states_set.find(transition["next_state"].get<std::string>()) == states_set.end()) {
-    std::cerr << "Error: 'next_state' in transition must be in 'states'" << std::endl;
     return false;
   }
 
