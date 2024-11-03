@@ -97,7 +97,7 @@ Su formato json sería el siguiente:
 }
 ```
 
-2. MT que reciba como parámetro una cadena compuesta por símbolos ‘a’ y ‘b’. La MT debe sustituir la cadena por el número de símbolos ‘b’, seguido del número de símbolos ‘a’ separados por un símbolo blanco. El número se codificará como $n\ =\ 1^n$
+2. **MT que reciba como parámetro una cadena compuesta por símbolos ‘a’ y ‘b’. La MT debe sustituir la cadena por el número de símbolos ‘b’, seguido del número de símbolos ‘a’ separados por un símbolo blanco. El número se codificará como $n\ =\ 1^n$**
 
 ![MT_2](Images/MT_2.png)
 
