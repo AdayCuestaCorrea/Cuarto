@@ -14,6 +14,10 @@
 #include "../TuringMachineLoader.h"
 #include "../../TuringMachines/MultitapeTuringMachine/MultitapeTuringMachine.h"
 
+/*
+ * @class MultitapeTMLoader
+ * @brief Loads multitape Turing machines from JSON files.
+ */
 class MultitapeTMLoader : public TuringMachineLoader {
  public:
   std::shared_ptr<TuringMachine> load(const std::string& file_path) override;

@@ -11,6 +11,10 @@
 
 #pragma once
 
+/*
+ * @class MovableTape
+ * @brief Interface for tapes that can move left and right.
+ */
 class MovableTape {
  public:
   virtual void moveLeft() = 0;

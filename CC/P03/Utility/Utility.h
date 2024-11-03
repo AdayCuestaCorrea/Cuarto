@@ -12,7 +12,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <unordered_set>
+#include "../TuringMachineLoader/LRSTuringMachineLoader/LRSTuringMachineLoader.h"
+#include "../TuringMachineLoader/MultitapeTMLoader/MultitapeTMLoader.h"
+#include "../TuringMachines/LRSTuringMachine/LRSTuringMachine.h"
+#include "../TuringMachines/MultitapeTuringMachine/MultitapeTuringMachine.h"
 
 namespace Utility {
   void help(int argc, char* argv[]);
@@ -20,6 +25,9 @@ namespace Utility {
   std::string removeComments(const std::string& line);
   void leftTrim(std::string& string);
   void rightTrim(std::string& string);
+  std::shared_ptr<TuringMachineLoader> createLoader(const std::string& file_path);
+  std::shared_ptr<TuringMachine> loadTuringMachine(const std::shared_ptr<TuringMachineLoader>& loader, const std::string& file_path);
+  void runTuringMachine(const std::shared_ptr<TuringMachine>& turing_machine, bool is_multitape);
 
   /**
    * @brief Checks if a vector contains duplicate elements.

@@ -15,6 +15,10 @@
 #include "../Types/StayableTape.h"
 #include "../Tape.h"
 
+/**
+ * @class LRSTuringMachineTape
+ * @brief A class representing a tape for a single-tape Turing machine.
+ */
 class LRSTuringMachineTape : public Tape, public StayableTape, public MovableTape {
  public:
   LRSTuringMachineTape(const Alphabet& tape_alphabet) : Tape(tape_alphabet) {}

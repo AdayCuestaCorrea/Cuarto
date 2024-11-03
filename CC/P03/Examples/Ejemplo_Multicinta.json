@@ -8,7 +8,7 @@
   "initial_state": "q0",
   "blank_symbol": ".",
   "final_states": ["q3"],
-  "number_of_tapes": 3,
+  "number_of_tapes": 2,
   "transitions": [
       {"current_state": "q0", "read_symbols": ["1", "."], "next_state": "q0", "write_symbols": ["1", "."], "move_directions": ["R", "S"]},
       {"current_state": "q0", "read_symbols": ["1", "1"], "next_state": "q0", "write_symbols": ["1", "1"], "move_directions": ["R", "R"]},

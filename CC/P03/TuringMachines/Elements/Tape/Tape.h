@@ -17,6 +17,18 @@
 typedef char Symbol;
 typedef std::vector<Symbol> Alphabet;
 
+
+/**
+ * @class Tape
+ * @brief Abstract base class representing a tape in a Turing machine.
+ *
+ * The Tape class provides an interface for reading from and writing to a tape,
+ * as well as managing the tape's content and alphabet. It is an abstract class
+ * and must be inherited by concrete implementations.
+ *
+ * @param tape_alphabet The alphabet used by the tape.
+ * @param content The initial content of the tape.
+ */
 class Tape {
  public:
   Tape(const Alphabet& tape_alphabet) : tape_alphabet_(tape_alphabet) {}

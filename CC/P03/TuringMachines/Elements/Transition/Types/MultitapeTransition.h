@@ -13,6 +13,22 @@
 
 #include "../Transition.h"
 
+
+/**
+ * @class MultiTapeTransition
+ * @brief Represents a transition in a multi-tape Turing machine.
+ *
+ * This class encapsulates the details of a transition in a multi-tape Turing machine,
+ * including the destination state, the symbols to read and write on each tape, and the
+ * directions to move the tape heads.
+ *
+ * @param destination_ The state to transition to.
+ * @param read_symbols_ The symbols to read from each tape.
+ * @param write_symbols_ The symbols to write to each tape.
+ * @param move_directions_ The directions to move the tape heads ('L' for left, 'R' for right, 'N' for no movement).
+ *
+ * @note This class inherits from the Transition class.
+ */
 class MultiTapeTransition : public Transition {
  public:
   MultiTapeTransition(std::shared_ptr<State> destination, const std::vector<Symbol>& read_symbols,

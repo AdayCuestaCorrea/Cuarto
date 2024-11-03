@@ -11,6 +11,10 @@
 
 #pragma once
 
+/*
+ * @class StayableTape
+ * @brief Interface for tapes that can stay.
+ */
 class StayableTape {
  public:
   virtual void stay() = 0;

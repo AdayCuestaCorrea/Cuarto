@@ -19,6 +19,10 @@
 
 using json = nlohmann::json;
 
+/**
+ * @class TuringMachineLoader
+ * @brief Abstract class for loading Turing machines from JSON files.
+ */
 class TuringMachineLoader {
  public:
   virtual std::shared_ptr<TuringMachine> load(const std::string& file_path) = 0;

@@ -15,6 +15,18 @@
 #include "../Elements/Tape/LRSTuringMachineTape/LRSTuringMachineTape.h"
 #include "../Elements/Transition/Types/SingleTapeTransition.h"
 
+/**
+ * @class LRSTuringMachine
+ * @brief A class representing a Turing Machine with Left-Right-Stop (LRS) tape movement.
+ * 
+ * This class extends the TuringMachine class and provides additional functionality
+ * specific to a Turing Machine that operates with a tape that can move left, right, or stop.
+ * 
+ * @param states A collection of states for the Turing Machine.
+ * @param initial_state The initial state of the Turing Machine.
+ * @param alphabet The alphabet used by the Turing Machine.
+ * @param tape The tape used by the Turing Machine.
+ */
 class LRSTuringMachine : public TuringMachine {
  public:
   LRSTuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet, LRSTuringMachineTape tape)

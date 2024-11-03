@@ -14,6 +14,10 @@
 #include "../TuringMachineLoader.h"
 #include "../../TuringMachines/LRSTuringMachine/LRSTuringMachine.h"
 
+/**
+ * @class LRSTuringMachineLoader
+ * @brief Loads single-tape Turing machines from JSON files.
+ */
 class LRSTuringMachineLoader : public TuringMachineLoader {
  public:
   std::shared_ptr<TuringMachine> load(const std::string& file_path) override;

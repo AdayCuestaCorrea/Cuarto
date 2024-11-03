@@ -21,6 +21,18 @@ typedef std::vector<std::shared_ptr<State>> States;
 typedef std::vector<Symbol> Alphabet;
 typedef std::variant<std::string, std::vector<std::string>> InputType;
 
+/**
+ * @class TuringMachine
+ * @brief Abstract base class representing a Turing Machine.
+ *
+ * This class provides the basic structure and interface for a Turing Machine.
+ * It includes the states, initial state, and alphabet of the machine.
+ * Derived classes must implement the execute and print methods.
+ *
+ * @param states A collection of states that the Turing Machine can be in.
+ * @param initial_state The initial state of the Turing Machine.
+ * @param alphabet The alphabet used by the Turing Machine.
+ */
 class TuringMachine {
  public:
   TuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet)

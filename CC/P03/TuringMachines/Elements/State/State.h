@@ -16,11 +16,10 @@
 
 #include "../Transition/Transition.h"
 
-/**
+/*
  * @class State
- * @brief A class representing a state in an automaton.
- * 
- */
+ * @brief A class representing a state in an Turing Machine.
+*/
 class State {
  public:
   State() = default;

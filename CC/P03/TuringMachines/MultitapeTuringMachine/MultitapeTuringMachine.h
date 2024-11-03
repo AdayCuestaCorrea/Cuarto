@@ -15,6 +15,13 @@
 #include "../Elements/Tape/LRSTuringMachineTape/LRSTuringMachineTape.h"
 #include "../Elements/Transition/Types/MultitapeTransition.h"
 
+/**
+ * @class MultitapeTuringMachine
+ * @brief A class representing a multi-tape Turing machine.
+ * 
+ * This class extends the TuringMachine class and provides functionality for
+ * a Turing machine with multiple tapes.
+ */
 class MultitapeTuringMachine : public TuringMachine {
  public:
   MultitapeTuringMachine(const States& states, std::shared_ptr<State> initial_state, const Alphabet& alphabet, std::vector<LRSTuringMachineTape> tape)

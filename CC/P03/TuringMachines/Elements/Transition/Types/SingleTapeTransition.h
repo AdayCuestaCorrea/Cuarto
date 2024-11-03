@@ -13,6 +13,19 @@
 
 #include "../Transition.h"
 
+/**
+ * @class SingleTapeTransition
+ * @brief Represents a transition in a single-tape Turing machine.
+ *
+ * This class inherits from the Transition class and encapsulates the details
+ * of a transition for a single-tape Turing machine, including the destination
+ * state, the symbol to read, the symbol to write, and the movement direction.
+ *
+ * @param destination A shared pointer to the destination state of the transition.
+ * @param read The symbol to be read from the tape.
+ * @param write The symbol to be written to the tape.
+ * @param movement The direction of the tape movement ('L' for left, 'R' for right, etc.).
+ */
 class SingleTapeTransition : public Transition {
  public:
   SingleTapeTransition(std::shared_ptr<State> destination, Symbol read, Symbol write, char movement)
