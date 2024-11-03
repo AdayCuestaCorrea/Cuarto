@@ -1,0 +1,24 @@
+{
+  "comments": [
+      "MT que reconozca el lenguaje L = { a^nb^m | m > n, n ≥ 0 }"
+  ],
+  "states": ["q0", "q1", "q2", "q3", "q4", "q5"],
+  "input_alphabet": ["a", "b"],
+  "tape_alphabet": ["a", "b", "."],
+  "initial_state": "q0",
+  "blank_symbol": ".",
+  "final_states": ["q5"],
+  "transitions": [
+      {"current_state": "q0", "read_symbol": "a", "next_state": "q1", "write_symbol": ".", "move_direction": "R"},
+      {"current_state": "q0", "read_symbol": "b", "next_state": "q4", "write_symbol": ".", "move_direction": "R"},
+      {"current_state": "q1", "read_symbol": "a", "next_state": "q1", "write_symbol": "a", "move_direction": "R"},
+      {"current_state": "q1", "read_symbol": "b", "next_state": "q1", "write_symbol": "b", "move_direction": "R"},
+      {"current_state": "q1", "read_symbol": ".", "next_state": "q2", "write_symbol": ".", "move_direction": "L"},
+      {"current_state": "q2", "read_symbol": "b", "next_state": "q3", "write_symbol": ".", "move_direction": "L"},
+      {"current_state": "q3", "read_symbol": "a", "next_state": "q3", "write_symbol": "a", "move_direction": "L"},
+      {"current_state": "q3", "read_symbol": "b", "next_state": "q3", "write_symbol": "b", "move_direction": "L"},
+      {"current_state": "q3", "read_symbol": ".", "next_state": "q0", "write_symbol": ".", "move_direction": "R"},
+      {"current_state": "q4", "read_symbol": "b", "next_state": "q4", "write_symbol": "b", "move_direction": "R"},
+      {"current_state": "q4", "read_symbol": ".", "next_state": "q5", "write_symbol": ".", "move_direction": "R"}
+  ]
+}
