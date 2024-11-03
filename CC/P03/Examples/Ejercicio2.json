@@ -5,7 +5,7 @@
     "seguido del número de símbolos ‘a’ separados por un símbolo blanco.",
     "El número se codificará como n = 1^n."
   ],
-  "states": ["q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"],
+  "states": ["q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"],
   "input_alphabet": ["a", "b"],
   "tape_alphabet": [".", "0", "1", "a", "b"],
   "initial_state": "q0",
@@ -32,13 +32,17 @@
       {"current_state": "q5", "read_symbols": ["b", "."], "next_state": "q5", "write_symbols": [".", "."], "move_directions": ["L", "L"]},
       {"current_state": "q5", "read_symbols": ["b", "1"], "next_state": "q5", "write_symbols": ["1", "1"], "move_directions": ["L", "L"]},
       {"current_state": "q5", "read_symbols": ["a", "1"], "next_state": "q5", "write_symbols": ["1", "1"], "move_directions": ["L", "L"]},
-      {"current_state": "q5", "read_symbols": [".", "."], "next_state": "q6", "write_symbols": [".", "."], "move_directions": ["R", "R"]},
+      {"current_state": "q5", "read_symbols": [".", "."], "next_state": "q10", "write_symbols": [".", "."], "move_directions": ["R", "S"]},
       {"current_state": "q7", "read_symbols": ["b", "."], "next_state": "q7", "write_symbols": ["b", "1"], "move_directions": ["L", "L"]},
       {"current_state": "q7", "read_symbols": ["a", "."], "next_state": "q7", "write_symbols": ["a", "."], "move_directions": ["L", "S"]},
       {"current_state": "q7", "read_symbols": [".", "."], "next_state": "q4", "write_symbols": [".", "."], "move_directions": ["R", "R"]},
       {"current_state": "q8", "read_symbols": ["a", "1"], "next_state": "q8", "write_symbols": [".", "1"], "move_directions": ["R", "R"]},
       {"current_state": "q8", "read_symbols": ["a", "."], "next_state": "q8", "write_symbols": [".", "."], "move_directions": ["R", "R"]},
       {"current_state": "q8", "read_symbols": [".", "1"], "next_state": "q9", "write_symbols": [".", "1"], "move_directions": ["L", "S"]},
-      {"current_state": "q9", "read_symbols": [".", "1"], "next_state": "q4", "write_symbols": ["0", "1"], "move_directions": ["L", "R"]}
+      {"current_state": "q8", "read_symbols": [".", "."], "next_state": "q9", "write_symbols": [".", "."], "move_directions": ["R", "R"]},
+      {"current_state": "q9", "read_symbols": [".", "1"], "next_state": "q4", "write_symbols": ["0", "1"], "move_directions": ["L", "R"]},
+      {"current_state": "q9", "read_symbols": [".", "."], "next_state": "q6", "write_symbols": ["0", "."], "move_directions": ["S", "R"]},
+      {"current_state": "q10", "read_symbols": [".", "."], "next_state": "q6", "write_symbols": [".", "."], "move_directions": ["R", "S"]},
+      {"current_state": "q10", "read_symbols": ["1", "."], "next_state": "q6", "write_symbols": ["1", "."], "move_directions": ["S", "S"]}
   ]
 }
