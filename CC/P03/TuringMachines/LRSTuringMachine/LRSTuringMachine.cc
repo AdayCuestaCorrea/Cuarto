@@ -103,11 +103,26 @@ void LRSTuringMachine::moveTape(char direction) {
 std::string LRSTuringMachine::generateResult(const std::shared_ptr<State>& current_state) {
   std::string result;
   if (current_state->isFinal()) {
-    result = "Turing Machine stopped on an accepted state.\nTape content: " + tape_.getContent();
+    result = "Turing Machine stopped on an accepted state.";
   } else {
-    result = "Turing Machine didn't stop on an accepted state.\nTape content: " + tape_.getContent();
+    result = "Turing Machine didn't stop on an accepted state.";
   }
   return result;
+}
+
+void LRSTuringMachine::printTape() const {
+  const std::string reset_color = "\033[0m";
+  const std::string head_color = "\033[31m";
+
+  std::string result = "Cinta: |";
+  for (size_t i = 0; i < tape_.getContent().size(); ++i) {
+    if (i == tape_.getHeadPosition()) {
+      result += head_color + tape_.getContent()[i] + reset_color + "|";
+    } else {
+      result += tape_.getContent()[i] + std::string("|");
+    }
+  }
+  std::cout << result << std::endl;
 }
 
 /**

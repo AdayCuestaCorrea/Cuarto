@@ -45,6 +45,8 @@ class TuringMachine {
     machine.print(os);
     return os;
   }
+
+  virtual void printTape() const = 0;
  protected:
   States states_;
   std::shared_ptr<State> initial_state_;

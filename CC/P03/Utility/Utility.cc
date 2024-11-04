@@ -190,7 +190,9 @@ namespace Utility {
         if (word.size() == 0) word = ".";
         result = turing_machine->execute(word);
       }
-      std::cout << result << std::endl << std::endl;
+      std::cout << result << std::endl;
+      turing_machine->printTape();
+      std::cout << std::endl;
     }
   }
 }

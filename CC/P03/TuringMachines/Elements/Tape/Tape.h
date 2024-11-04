@@ -41,6 +41,8 @@ class Tape {
   virtual void setContent(const std::string& content) = 0;
   virtual Alphabet getAlphabet() const = 0;
 
+  virtual int getHeadPosition() const = 0;
+
   virtual ~Tape() = default;
 
  protected:

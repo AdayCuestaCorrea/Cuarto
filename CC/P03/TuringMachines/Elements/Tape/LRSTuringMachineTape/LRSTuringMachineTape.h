@@ -30,6 +30,7 @@ class LRSTuringMachineTape : public Tape, public StayableTape, public MovableTap
   void write(char symbol) override;
   void moveLeft() override;
   void moveRight() override;
+  int getHeadPosition() const override { return head_position_; }
   void stay() override {
     // Do nothing
   }

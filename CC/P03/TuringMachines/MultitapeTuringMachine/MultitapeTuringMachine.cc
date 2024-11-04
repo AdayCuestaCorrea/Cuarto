@@ -149,11 +149,15 @@ void MultitapeTuringMachine::applyTransition(const std::shared_ptr<Transition> t
 std::string MultitapeTuringMachine::generateResult(const std::shared_ptr<State>& current_state) {
   std::string result;
   if (current_state->isFinal()) {
-    result = "Turing Machine stopped on an accepted state.\nTape content:\n" + getTapeContents();
+    result = "Turing Machine stopped on an accepted state.";
   } else {
-    result = "Turing Machine didn't stop on an accepted state.\nTape content:\n" + getTapeContents();
+    result = "Turing Machine didn't stop on an accepted state.";
   }
   return result;
+}
+
+void MultitapeTuringMachine::printTape() const {
+  std::cout << getTapeContents() << std::endl;
 }
 
 /**
@@ -168,8 +172,19 @@ std::string MultitapeTuringMachine::generateResult(const std::shared_ptr<State>&
  */
 std::string MultitapeTuringMachine::getTapeContents() const {
   std::string result;
+  const std::string reset_color = "\033[0m";
+  const std::string head_color = "\033[31m";
+
   for (size_t i = 0; i < tape_.size(); ++i) {
-    result += "Tape " + std::to_string(i + 1) + ": " + tape_[i].getContent() + "\n";
+    result += "Cinta " + std::to_string(i + 1) + ": |";
+    for (size_t j = 0; j < tape_[i].getContent().size(); ++j) {
+      if (j == tape_[i].getHeadPosition()) {
+        result += head_color + tape_[i].getContent()[j] + reset_color + "|";
+      } else {
+        result += tape_[i].getContent()[j] + std::string("|");
+      }
+    }
+    result += "\n";
   }
   return result;
 }

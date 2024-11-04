@@ -34,6 +34,7 @@ class LRSTuringMachine : public TuringMachine {
 
   std::string execute(InputType input) override;
   void print(std::ostream& os) const override;
+  void printTape() const override;
  private:
   LRSTuringMachineTape tape_;
   bool processTransitions(std::shared_ptr<State>& current_state, char read_symbol);

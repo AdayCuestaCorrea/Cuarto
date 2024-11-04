@@ -30,6 +30,7 @@ class MultitapeTuringMachine : public TuringMachine {
   std::string execute(InputType input) override;
   bool processTransition(std::shared_ptr<State> &current_state, Alphabet &read_symbols);
   void print(std::ostream& os) const override;
+  void printTape() const override;
  private:
   std::vector<LRSTuringMachineTape> tape_;
   std::string getTapeContents() const;
